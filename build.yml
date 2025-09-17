@@ -1,0 +1,17 @@
+name: build
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and run tests
+        run: bash run.sh -xe
+      - name: Build annotations
+        if: always()
+        uses: yuzutech/annotations-action@main
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          title: annotations (build)
+          input: diagnostics.json
